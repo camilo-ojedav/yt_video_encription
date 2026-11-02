@@ -1,0 +1,7 @@
+*.env
+key*
+!web/media/*.json
+__pycache__/
+*.mp4
+*.wav
+out/

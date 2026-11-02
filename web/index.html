@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Video cifrado</title>
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="stylesheet" href="style.css">
+</head><body>
+<!-- Etapa 1: reordena las celdas de 20x20 (nucleo 18 + guarda 1). Etapa 2: recorta el nucleo. Mapas generados con la clave (cipher.js).
+     Va como backdrop-filter: es lo unico que Chrome/Edge aplican sobre un iframe de otro origen. -->
+<svg width="0" height="0" style="position:absolute"><filter id="unshuffle" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feImage id="fmap1" preserveAspectRatio="none" result="m1"/>
+<feDisplacementMap id="fdisp1" in="SourceGraphic" in2="m1" xChannelSelector="R" yChannelSelector="G" result="r1"/>
+<feImage id="fmap2" preserveAspectRatio="none" result="m2"/>
+<feDisplacementMap id="fdisp2" in="r1" in2="m2" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
+
+<header><h1>Video cifrado</h1><p id="title"></p></header>
+
+<div id="wrap"><div id="box"><div id="scaler"><div id="stage">
+  <div id="layer"><div id="player"></div></div>
+  <canvas id="inv" width="1280" height="720"></canvas>
+  <div id="cover"></div>
+</div></div><div id="fx"></div><div id="view"></div><div id="veil">🔒</div></div></div>
+
+<div id="warn"></div>
+<form id="unlock" autocomplete="off">
+  <label>Video <select id="pkg"></select></label>
+  <input type="text" id="yt" placeholder="Link de YouTube del video cifrado">
+  <input type="password" id="key" placeholder="Clave secreta" autocomplete="off">
+  <label class="small"><input type="checkbox" id="remember"> Recordar clave en este navegador</label>
+  <button id="btnUnlock" type="submit">Descifrar y cargar</button>
+  <label class="file">o abrir el .mp4 cifrado <input type="file" id="file" accept="video/*"></label>
+</form>
+<div id="ctl">
+  <button id="btnPlay" disabled>▶ Reproducir</button>
+  <button id="btnPause" disabled>⏸ Pausar</button>
+  <button id="btnFs">Pantalla completa (F)</button>
+  <label><input type="checkbox" id="fxToggle" checked> Descifrar imagen</label>
+  <label>Volumen <input type="range" id="vol" min="0" max="100" value="80"></label>
+</div>
+<div id="st">Introduce la clave y pulsa «Descifrar y cargar».</div>
+<footer>La clave nunca sale de tu navegador: se deriva con PBKDF2 y descifra el audio (AES-256-GCM) y el orden y color de las celdas de la imagen.</footer>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script type="module" src="app.js"></script>
+</body></html>
